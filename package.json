@@ -1,21 +1,21 @@
 {
-  "name": "vec-la",
+  "name": "vec-la-fp",
   "version": "1.5.0",
-  "description": "A tiny 2d linear algebra library",
+  "description": "A tiny (function) 2d linear algebra library",
   "main": "dist/vec.module.js",
   "scripts": {
     "test": "mocha tests"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/francisrstokes/vec.git"
+    "url": "git+https://github.com/francisrstokes/vec-la-fp.git"
   },
   "author": "Francis Stokes",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/francisrstokes/vec/issues"
+    "url": "https://github.com/francisrstokes/vec-la-fp/issues"
   },
-  "homepage": "https://github.com/francisrstokes/vec#readme",
+  "homepage": "https://github.com/francisrstokes/vec-la-fp#readme",
   "devDependencies": {
     "babel-plugin-transform-object-rest-spread": "^6.23.0",
     "babel-preset-es2015": "^6.24.1",
@@ -25,6 +25,7 @@
     "gulp-browserify": "^0.5.1",
     "gulp-rename": "^1.2.2",
     "gulp-strip-code": "^0.1.4",
-    "mocha": "^3.4.2"
+    "mocha": "^3.4.2",
+    "ramda": "^0.25.0"
   }
 }

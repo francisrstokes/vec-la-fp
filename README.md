@@ -1,76 +1,96 @@
-# vec
+# vec-la-fp
 
-Tiny linear algebra library specifically for 2d.
-
-See it in action: https://codepen.io/fstokesman/pen/aWgEXv
+`Vec-la-fp` is the functional version of the `vec-la` library. All functions are curried with arguments reordered to support composition. MatrixBuilder is replaced with composable calls to `mRotate`, `mTranslate`, `mScale`, `mShear`, and `mCompose` for abitrary matrix concatenations.
 
 ## Installation
 
-`npm install --save vec-la`
+`npm install --save vec-la-fp`
 
 and import or require as needed. If you need to use a standalone windowed version in a script tag:
 
-`<script src="node_modules/vec-la/dist/vec.window.js"></script>`
+`<script src="node_modules/vec-la-fp/dist/vec.window.js"></script>`
 
 ## Features
 
-- Immutable functions for manipulating vectors
+- Immutable functions for manipulating vectors and matrices
 - Vectors and matrices represented as pure, single dimensional arrays
-- Immutable Matrix builder helper object for sequentially composing matrices
+- Composable and fully curried
 
 ## API
 
-- `vec.add(v, v2)` : Result of adding `v` and `v2`
-- `vec.sub(v, v2)` : Result of subtracting `v2` from `v`
-- `vec.scale(v, sc)` : Result of multiplying components of `v` by `sc`
-- `vec.midpoint(v, v2)` : Midpoint between `v` and `v2`
-- `vec.norm(v)` : Result of normalising `v`
-- `vec.mag(v)` : Magnitude of `v`
-- `vec.normal(v)`: Normal vector of `v`
-- `vec.towards(v, v2, t)`: A point in the interval [v, v2] along the direction formed from `v2 - v1`. `t` is a normalalised percentage [0, 1] of where in the interval the point falls.
-- `vec.rotate(v, a)` : Result of rotating `v` around the origin by `a` radians
-- `vec.rotatePointAround(v, cp, a)` : Result of rotating `v` around `cp` by `a` radians
-- `vec.dot(v, v2)` : Dot product of `v` and `v2`
-- `vec.det(v)` : Determinant of `v`
-- `vec.dist(v, v2)` : Euclidean distance between `v` and `v2`
-- `vec.matrixBuilder(m)` : Creates a matrix builder (see below)
-- `vec.createMatrix(a, b, c, d, tx, ty)` : Helper function for matrix creation. Defaults to an identity matrix
-- `vec.transform(v, m)` : Result of applying matrix tranformation `m` to `v`
-- `vec.composeTransform(m, m2)` : Result of composing transformation matrix `m` with `m2`
+`vec.add(v, v2)` - adds `v` and `v2`
+
+`vec.sub(v, v2)` - subtracts `v2` from `v1`
+
+`vec.mag(v)` - gets magnitude of `v`
+
+`vec.normal(v)` - gets normal vector of `v`
+
+`vec.scale(sc, v)` - scales `v` by `sc`
+
+`vec.towards(t, v, v2)` - gets the vector at "time" `t` between `v` and `v2`
+
+`vec.norm(v)` - normalises `v`
+
+`vec.mId` - immutable identity matrix
+
+`vec.createMatrix(a, b, c, d, tx, ty)` - helper function for creating matrices
+
+`vec.transform(m, v)` - transform `v` by matrix `m`
+
+`vec.compose(m, m2)` - compose matrices `m` and `m2`
+
+`vec.mRotate(a, m)` - compose matrix `m` with a rotation matrix using angle `a`
+
+`vec.mTranslate(v, m)` - compose matrix `m` with a translation matrix using vector `v` for x and y
+
+`vec.mScale(v, m)` - compose matrix `m` with a scale matrix using vector `v` for x and y
+
+`vec.mShear(v, m)` - compose matrix `m` with a shear matrix using vector `v` for x and y
+
+`vec.rotate(a, v)` - rotates `v` by angle `a`
+
+`vec.rotatePointAround(a, cp, v)` - rotates `v` by angle `a` around control point vector `cp`
+
+`vec.midpoint(v, v2)` - gets midpoint between v and v2
+
+`vec.alongAngle(a, r, v)` - gets a vector r units along angle a from vector v
+
+`vec.dist(v, v2)` - gets distance from v to v2
+
+`vec.dot(v, v2)` - gets dot product of v and v2
+
+`vec.det(m)` - calculates the determine of matrix m
+
 
 
 Finally, when using the window version you can call `vec.polute()` to insert these functions into the global scope with the naming convention:
 
 `vFunctionName` e.g `vAdd`, `vMidpoint`, `vDot` etc.
 
-## Matrix Builder
+## Composing matrices
 
-`vec.matrixBuilder(m)` creates a builder object that can be used to easily chain together transformations. Call `get()` on the builder at any time to get a copy of the matrix at that point.
+vec-la provided a dot-chain style API for building matrices, but since matrices compose the same as functions, this API can be captured via regular function composition. For example:
 
-```javascript 
-const mb = vec.matrixBuilder(); // Defaults to identity matrix
-const finalMatrix = mb
-  .rotate(Math.PI/6)
-  .scale(2, 3)
-  .shear(0.2, 0)
-  .translate(20, 40)
-  .get();
-
-// [ 
-//  2.0320508075688775, -0.48038475772933664, 20,
-//  1.4999999999999998, 2.598076211353316, 40,
-//  0, 0, 1
-// ]
+```javascript
+const M = compose(
+  mTranslate([10, 20]),
+  mShear([0.2, 0.3]),
+  mScale([3.2, 2.3]),
+  mRotate(1.5)
+)(mId);
 ```
 
-The function also accepts a matrix as it's argument. 
+is equivilent to vec-la's:
 
-- `rotate(a)` : Concatenate a rotation matrix of `a` radians
-- `scale(x, y)` : Concatenate a scaling matrix
-- `shear(x, y)` : Concatenate a shearing matrix
-- `translate(x, y)` : Concatenate a translation matrix
-- `add(m)` : Concatenate an arbitrary matrix
-- `get()` : Return the resulting matrix
+```javascript
+const M = vMatrixBuilder()
+  .translate(10, 20),
+  .shear(0.2, 0.3),
+  .scale(3.2, 2.3),
+  .rotate(1.5)
+  .get();
+```
 
 ## Tests
 
@@ -93,7 +113,7 @@ const v3 = vec.add(v1, v2); // [1, 1]
 ```javascript 
 const v1 = [0, 1];
 const scaler = 10;
-const v2 = vec.scale(v1, scaler); // [0, 10]
+const v2 = vec.scale(scaler, v1); // [0, 10]
 ```
 
 ### Normalising
@@ -122,7 +142,7 @@ const m = [
    0, -1, 0,
    0,  0, 1
 ];
-const v2 = vec.transform(v1, m); // [-10, -10]
+const v2 = vec.transform(m, v1); // [-10, -10]
 ```
 
 ### Computing determinants
@@ -135,31 +155,3 @@ const m = [
 ];
 const d = vec.det(m); // 100
 ```
-
-### Composing Matrices
-
-```javascript 
-const v = [10, 10];
-const m = [
-  0, -1, 0,
-  -1, 0, 0,
-   0, 0, 1
-];
-const m2 = [
-  Math.cos(Math.PI/2), -Math.sin(Math.PI/2), 0,
-  Math.sin(Math.PI/2), Math.cos(Math.PI/2)   0,
-  0, 0, 1
-];
-const m3 = vec.composeTransform(m2, m);
-
-const v2 = vec.transform(v1, m1); // is the same as
-const v3 = vec.transform(vec.transform(v1, m), m2);
-```
-
-## Motivation
-
- Many linear algebra libraries represent their vectors as object like `{ x, y, mutableMethod, ... }`, which can be cumbersome to work with. Arrays are easier to map, reduce, combine and generally work with symbolically. Additionally, Vec is designed to be used with ES6 and thus the `...` rest syntax, and so can easily and cleanly be supplied to functions expecting `x` and `y` parameters as sequential arguments.
- 
- For example: 
- 
- `ctx.arc(...point, radius, 0, 2 * Math.PI, false)`;
