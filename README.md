@@ -85,10 +85,10 @@ is equivilent to vec-la's:
 
 ```javascript
 const M = vMatrixBuilder()
-  .translate(10, 20),
-  .shear(0.2, 0.3),
-  .scale(3.2, 2.3),
   .rotate(1.5)
+  .scale(3.2, 2.3)
+  .shear(0.2, 0.3)
+  .translate(10, 20)
   .get();
 ```
 
