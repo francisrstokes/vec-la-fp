@@ -152,6 +152,11 @@ var vAlongAngle = curry(function (a, r, v) {
   return [v[0] + Math.cos(a) * r, v[1] + Math.sin(a) * r];
 });
 
+// vFastDist :: Vector -> Vector -> Number
+var vFastDist = curry(function (v, v2) {
+  return Math.pow(v2[0] - v[0], 2) + Math.pow(v2[1] - v[1], 2);
+});
+
 // vDist :: Vector -> Vector -> Number
 var vDist = curry(function (v, v2) {
   return Math.hypot(v2[0] - v[0], v2[1] - v[1]);
@@ -189,6 +194,7 @@ var vec = exports.vec = {
   midpoint: vMidpoint,
   alongAngle: vAlongAngle,
   dist: vDist,
+  fastDist: vFastDist,
   dot: vDot,
   det: vDet
 };

@@ -104,6 +104,20 @@ describe('Vec-la', function() {
     expect(vec.midpoint(v1, v2)).to.deep.equal([5, 0]);
   });
 
+  it('should get the distance between two vectors', () => {
+    const v1 = [10, 20];
+    const v2 = [40, 60];
+
+    expect(vec.dist(v1, v2)).to.deep.equal(50);
+  });
+
+  it('should get the fast distance between two vectors', () => {
+    const v1 = [10, 20];
+    const v2 = [40, 60];
+
+    expect(vec.fastDist(v1, v2)).to.deep.equal(Math.pow(50, 2));
+  });
+
   it('should compute the determinate of a matrix', () => {
     const m = [
       10, 0, 0,

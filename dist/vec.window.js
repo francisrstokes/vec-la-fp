@@ -153,6 +153,11 @@ var vAlongAngle = curry(function (a, r, v) {
   return [v[0] + Math.cos(a) * r, v[1] + Math.sin(a) * r];
 });
 
+// vFastDist :: Vector -> Vector -> Number
+var vFastDist = curry(function (v, v2) {
+  return Math.pow(v2[0] - v[0], 2) + Math.pow(v2[1] - v[1], 2);
+});
+
 // vDist :: Vector -> Vector -> Number
 var vDist = curry(function (v, v2) {
   return Math.hypot(v2[0] - v[0], v2[1] - v[1]);
@@ -192,6 +197,7 @@ var polute = function polute() {
   window.vRotatePointAround = vRotatePointAround;
   window.vMidpoint = vMidpoint;
   window.vAlongAngle = vAlongAngle;
+  window.vFastDist = vFastDist;
   window.vDist = vDist;
   window.vDot = vDot;
   window.vDet = vDet;
@@ -214,6 +220,6 @@ window.vec = (_window$vec = {
   compose: mCompose,
   rotate: mRotate,
   translate: mTranslate
-}, _defineProperty(_window$vec, "scale", mScale), _defineProperty(_window$vec, "shear", mShear), _defineProperty(_window$vec, "rotate", vRotate), _defineProperty(_window$vec, "rotatePointAround", vRotatePointAround), _defineProperty(_window$vec, "midpoint", vMidpoint), _defineProperty(_window$vec, "alongAngle", vAlongAngle), _defineProperty(_window$vec, "dist", vDist), _defineProperty(_window$vec, "dot", vDot), _defineProperty(_window$vec, "det", vDet), _defineProperty(_window$vec, "polute", polute), _window$vec);
+}, _defineProperty(_window$vec, "scale", mScale), _defineProperty(_window$vec, "shear", mShear), _defineProperty(_window$vec, "rotate", vRotate), _defineProperty(_window$vec, "rotatePointAround", vRotatePointAround), _defineProperty(_window$vec, "midpoint", vMidpoint), _defineProperty(_window$vec, "alongAngle", vAlongAngle), _defineProperty(_window$vec, "dist", vDist), _defineProperty(_window$vec, "fastDist", vFastDist), _defineProperty(_window$vec, "dot", vDot), _defineProperty(_window$vec, "det", vDet), _defineProperty(_window$vec, "polute", polute), _window$vec);
 /* end window exports */
 },{}]},{},[1])

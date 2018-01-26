@@ -132,6 +132,9 @@ const vAlongAngle = curry((a, r, v) => [
   v[1] + Math.sin(a) * r
 ]);
 
+// vFastDist :: Vector -> Vector -> Number
+const vFastDist = curry((v, v2) => Math.pow(v2[0] - v[0], 2) + Math.pow(v2[1] - v[1], 2));
+
 // vDist :: Vector -> Vector -> Number
 const vDist = curry((v, v2) => Math.hypot(v2[0] - v[0], v2[1] - v[1]));
 
@@ -166,6 +169,7 @@ const polute = function () {
   window.vRotatePointAround = vRotatePointAround;
   window.vMidpoint = vMidpoint;
   window.vAlongAngle = vAlongAngle;
+  window.vFastDist = vFastDist;
   window.vDist = vDist;
   window.vDot = vDot;
   window.vDet = vDet;
@@ -195,6 +199,7 @@ window.vec = {
   midpoint: vMidpoint,
   alongAngle: vAlongAngle,
   dist: vDist,
+  fastDist: vFastDist,
   dot: vDot,
   det: vDet,
 
@@ -224,6 +229,7 @@ export const vec = {
   midpoint: vMidpoint,
   alongAngle: vAlongAngle,
   dist: vDist,
+  fastDist: vFastDist,
   dot: vDot,
   det: vDet,
 }
