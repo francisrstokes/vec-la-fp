@@ -1,6 +1,6 @@
 {
   "name": "vec-la-fp",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "description": "A tiny (function) 2d linear algebra library",
   "main": "dist/vec.module.js",
   "scripts": {
