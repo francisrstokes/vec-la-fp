@@ -77,8 +77,13 @@ var vScale = curry(function (sc, v) {
 // vTowards :: Number -> Vector -> Vector -> Vector
 var vTowards = curry(function (t, v1, v2) {
   var d = vSub(v2, v1);
-  var m = vMag(d);
-  return vAdd(v1, vScale(t * m, vNorm(d)));
+  var sc = vMag(d) * t;
+  return vAdd(v1, vScale(sc, vNorm(d)));
+});
+
+// vLerp :: Vector -> Vector -> Number -> Vector
+var vLerp = curry(function (v1, v2, t) {
+  return vTowards(t, v1, v2);
 });
 
 // vNorm :: Vector -> Vector
@@ -147,9 +152,14 @@ var vMidpoint = curry(function (v, v2) {
   return vScale(0.5, vAdd(v, v2));
 });
 
+// vAngle :: Number -> Vector
+var vAngle = function vAngle(a) {
+  return [Math.cos(a), Math.sin(a)];
+};
+
 // vAlongAngle :: Number -> Number -> Vector
 var vAlongAngle = curry(function (a, r, v) {
-  return [v[0] + Math.cos(a) * r, v[1] + Math.sin(a) * r];
+  return compose(vAdd(v), vScale(r), vAngle)(a);
 });
 
 // vFastDist :: Vector -> Vector -> Number
@@ -180,6 +190,7 @@ var vec = exports.vec = {
   normal: vNormal,
   scale: vScale,
   towards: vTowards,
+  lerp: vLerp,
   norm: vNorm,
   mId: mId,
   createMatrix: vCreateMatrix,
@@ -192,6 +203,7 @@ var vec = exports.vec = {
   rotate: vRotate,
   rotatePointAround: vRotatePointAround,
   midpoint: vMidpoint,
+  angle: vAngle,
   alongAngle: vAlongAngle,
   dist: vDist,
   fastDist: vFastDist,

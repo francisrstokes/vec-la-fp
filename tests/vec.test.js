@@ -3,31 +3,32 @@ const expect = chai.expect;
 const {compose} = require('ramda');
 const {vec} = require('../dist/vec.module.js');
 
+/* eslint-disable func-names */
 describe('Vec-la', function() {
   it('should add two vectors', () => {
-    const v1 = [1,2];
-    const v2 = [3,4];
+    const v1 = [1, 2];
+    const v2 = [3, 4];
     expect(vec.add(v1, v2)).to.deep.equal([4, 6]);
   });
 
   it('should subtract two vectors', () => {
-    const v1 = [1,2];
-    const v2 = [3,4];
+    const v1 = [1, 2];
+    const v2 = [3, 4];
     expect(vec.sub(v1, v2)).to.deep.equal([-2, -2]);
   });
 
   it('should get the magnitude of a vector', () => {
-    const v1 = [3,4];
+    const v1 = [3, 4];
     expect(vec.mag(v1)).to.equal(5);
   });
 
   it('should normalise a vector', () => {
-    const v1 = [3,4];
-    expect(vec.norm(v1)).to.deep.equal([3/5, 4/5]);
+    const v1 = [3, 4];
+    expect(vec.norm(v1)).to.deep.equal([3 / 5, 4 / 5]);
   });
 
   it('should scale a vector', () => {
-    const v1 = [3,4];
+    const v1 = [3, 4];
     const sc = 10;
     expect(vec.scale(sc, v1)).to.deep.equal([30, 40]);
   });
@@ -46,7 +47,7 @@ describe('Vec-la', function() {
   });
 
   it('should apply a matrix transformation to a vector', () => {
-    const v1 = [3,4];
+    const v1 = [3, 4];
     const m = [
       10, 0, 10,
       0, 10, 10,
@@ -77,7 +78,7 @@ describe('Vec-la', function() {
 
   it('should rotate a vector', () => {
     const v1 = [2, 0];
-    const angle = Math.PI/2;
+    const angle = Math.PI / 2;
     const result = vec.rotate(angle, v1);
 
     // Remove float point error
@@ -89,7 +90,7 @@ describe('Vec-la', function() {
   it('should rotate a vector around another vector', () => {
     const v1 = [2, 0];
     const v2 = [4, 0];
-    const angle = Math.PI/2;
+    const angle = Math.PI / 2;
     const result = vec.rotatePointAround(angle, v1, v2);
 
     // Remove float point error
@@ -102,6 +103,18 @@ describe('Vec-la', function() {
     const v1 = [0, 0];
     const v2 = [10, 0];
     expect(vec.midpoint(v1, v2)).to.deep.equal([5, 0]);
+  });
+
+  it('should get a vector from an angle', () => {
+    const a = 1.234;
+    expect(vec.angle(a)).to.deep.equal([0.33046510807172985, 0.9438182093746337]);
+  });
+
+  it('should get a vector along an angle', () => {
+    const a = 1.234;
+    const r = 10;
+    const v = [10, 10];
+    expect(vec.alongAngle(a, r, v)).to.deep.equal([10 + 0.33046510807172985 * 10, 10 + 0.9438182093746337 * 10]);
   });
 
   it('should get the distance between two vectors', () => {
@@ -158,5 +171,6 @@ describe('Vec-la', function() {
     )(vec.mId);
 
     expect(M).to.deep.equal(expected);
-  })
+  });
 });
+/* eslint-enable func-names */

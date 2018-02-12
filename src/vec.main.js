@@ -19,26 +19,29 @@ const compose = (...functions) => pipe(...functions.reverse());
 
 
 // vAdd :: Vector -> Vector -> Vector
-const vAdd = curry((v, v2) => [v[0]+v2[0], v[1]+v2[1]]);
+const vAdd = curry((v, v2) => [v[0] + v2[0], v[1] + v2[1]]);
 
 // vSub :: Vector -> Vector -> Vector
-const vSub = curry((v, v2) => [v[0]-v2[0], v[1]-v2[1]]);
+const vSub = curry((v, v2) => [v[0] - v2[0], v[1] - v2[1]]);
 
 // vMag :: Vector -> Number
-const vMag = (v) => Math.sqrt(v[0]*v[0]+v[1]*v[1]);
+const vMag = (v) => Math.sqrt(v[0] * v[0] + v[1] * v[1]);
 
 // vNormal :: Vector -> Vector
 const vNormal = (v) => [-v[1], v[0]];
 
 // vScale :: Number -> Vector
-const vScale = curry((sc, v) => [v[0]*sc, v[1]*sc]);
+const vScale = curry((sc, v) => [v[0] * sc, v[1] * sc]);
 
 // vTowards :: Number -> Vector -> Vector -> Vector
 const vTowards = curry((t, v1, v2) => {
   const d = vSub(v2, v1);
-  const m = vMag(d);
-  return vAdd(v1, vScale(t*m, vNorm(d)));
+  const sc = vMag(d) * t;
+  return vAdd(v1, vScale(sc, vNorm(d)));
 });
+
+// vLerp :: Vector -> Vector -> Number -> Vector
+const vLerp = curry((v1, v2, t) => vTowards(t, v1, v2));
 
 // vNorm :: Vector -> Vector
 const vNorm = (v) => {
@@ -57,7 +60,7 @@ const mId = Object.freeze([
 ]);
 
 // vCreateMatrix :: Number -> Number -> Number -> Number -> Number -> Number -> Matrix
-const vCreateMatrix = (a=1, b=0, c=0, d=1, tx=0, ty=0) =>[
+const vCreateMatrix = (a = 1, b = 0, c = 0, d = 1, tx = 0, ty = 0) =>[
   a, c, tx,
   b, d, ty,
   0, 0, 1
@@ -65,15 +68,15 @@ const vCreateMatrix = (a=1, b=0, c=0, d=1, tx=0, ty=0) =>[
 
 // vTransform :: Matrix -> Vector -> Vector
 const vTransform = curry((m, v) => [
-  v[0]*m[0] + v[1]*m[1] + m[2],
-  v[0]*m[3] + v[1]*m[4] + m[5]
+  v[0] * m[0] + v[1] * m[1] + m[2],
+  v[0] * m[3] + v[1] * m[4] + m[5]
 ]);
 
 // mCompose :: Matrix -> Matrix -> Matrix
 const mCompose = curry((m, m2) => [
-  m[0]*m2[0] + m[1]*m2[3] + m[2]*m2[6],   m[0]*m2[1] + m[1]*m2[4] + m[2]*m2[7],    m[0]*m2[2] + m[1]*m2[5] + m[2]*m2[8],
-  m[3]*m2[0] + m[4]*m2[3] + m[5]*m2[6],   m[3]*m2[1] + m[4]*m2[4] + m[5]*m2[7],    m[3]*m2[2] + m[4]*m2[5] + m[5]*m2[8],
-  m[6]*m2[0] + m[7]*m2[3] + m[8]*m2[6],   m[6]*m2[1] + m[7]*m2[4] + m[8]*m2[7],    m[6]*m2[2] + m[7]*m2[5] + m[8]*m2[8]
+  m[0] * m2[0] + m[1] * m2[3] + m[2] * m2[6],   m[0] * m2[1] + m[1] * m2[4] + m[2] * m2[7],    m[0] * m2[2] + m[1] * m2[5] + m[2] * m2[8],
+  m[3] * m2[0] + m[4] * m2[3] + m[5] * m2[6],   m[3] * m2[1] + m[4] * m2[4] + m[5] * m2[7],    m[3] * m2[2] + m[4] * m2[5] + m[5] * m2[8],
+  m[6] * m2[0] + m[7] * m2[3] + m[8] * m2[6],   m[6] * m2[1] + m[7] * m2[4] + m[8] * m2[7],    m[6] * m2[2] + m[7] * m2[5] + m[8] * m2[8]
 ]);
 
 // mRotate :: Number -> Matrix -> Matrix
@@ -126,11 +129,11 @@ const vRotatePointAround = curry((a, cp, v) => {
 // vMidpoint :: Vector -> Vector -> Vector
 const vMidpoint = curry((v, v2) => vScale(0.5, vAdd(v, v2)));
 
+// vAngle :: Number -> Vector
+const vAngle = (a) => [Math.cos(a), Math.sin(a)];
+
 // vAlongAngle :: Number -> Number -> Vector
-const vAlongAngle = curry((a, r, v) => [
-  v[0] + Math.cos(a) * r,
-  v[1] + Math.sin(a) * r
-]);
+const vAlongAngle = curry((a, r, v) => compose(vAdd(v), vScale(r), vAngle)(a));
 
 // vFastDist :: Vector -> Vector -> Number
 const vFastDist = curry((v, v2) => Math.pow(v2[0] - v[0], 2) + Math.pow(v2[1] - v[1], 2));
@@ -139,23 +142,25 @@ const vFastDist = curry((v, v2) => Math.pow(v2[0] - v[0], 2) + Math.pow(v2[1] - 
 const vDist = curry((v, v2) => Math.hypot(v2[0] - v[0], v2[1] - v[1]));
 
 // vDot :: Vector -> Vector -> Number
-const vDot = curry((v, v2) => v[0]*v2[0] + v[1]*v2[1]);
+const vDot = curry((v, v2) => v[0] * v2[0] + v[1] * v2[1]);
 
 // vDet :: Matrix -> Number
-const vDet = (m) => m[0]*m[4] - m[3]*m[1];
+const vDet = (m) => m[0] * m[4] - m[3] * m[1];
 
 
 /* start window exports */
 /**
  * Polutes the global scope with unnamespaced functions
  */
-const polute = function () {
+/* eslint-disable func-names */
+const polute = function() {
   window.vAdd = vAdd;
   window.vSub = vSub;
   window.vMag = vMag;
   window.vNormal = vNormal;
   window.vScale = vScale;
   window.vTowards = vTowards;
+  window.vLerp = vLerp;
   window.vNorm = vNorm;
   window.mId = mId;
   window.vCreateMatrix = vCreateMatrix;
@@ -173,7 +178,8 @@ const polute = function () {
   window.vDist = vDist;
   window.vDot = vDot;
   window.vDet = vDet;
-}
+};
+/* eslint-enable func-names */
 
 /**
  * Exposed API
@@ -185,18 +191,20 @@ window.vec = {
   normal: vNormal,
   scale: vScale,
   towards: vTowards,
+  lerp: vLerp,
   norm: vNorm,
   mId: mId,
   createMatrix: vCreateMatrix,
   transform: vTransform,
   compose: mCompose,
-  rotate: mRotate,
-  translate: mTranslate,
-  scale: mScale,
-  shear: mShear,
+  mRotate: mRotate,
+  mTranslate: mTranslate,
+  mScale: mScale,
+  mShear: mShear,
   rotate: vRotate,
   rotatePointAround: vRotatePointAround,
   midpoint: vMidpoint,
+  angle: vAngle,
   alongAngle: vAlongAngle,
   dist: vDist,
   fastDist: vFastDist,
@@ -215,6 +223,7 @@ export const vec = {
   normal: vNormal,
   scale: vScale,
   towards: vTowards,
+  lerp: vLerp,
   norm: vNorm,
   mId: mId,
   createMatrix: vCreateMatrix,
@@ -227,10 +236,11 @@ export const vec = {
   rotate: vRotate,
   rotatePointAround: vRotatePointAround,
   midpoint: vMidpoint,
+  angle: vAngle,
   alongAngle: vAlongAngle,
   dist: vDist,
   fastDist: vFastDist,
   dot: vDot,
   det: vDet,
-}
+};
 /* end exports */

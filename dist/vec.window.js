@@ -1,10 +1,6 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 "use strict";
 
-var _window$vec;
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 // curry :: (a -> b -> ... -> n) -> (a -> b) -> (b -> ...) -> (... -> n)
@@ -78,8 +74,13 @@ var vScale = curry(function (sc, v) {
 // vTowards :: Number -> Vector -> Vector -> Vector
 var vTowards = curry(function (t, v1, v2) {
   var d = vSub(v2, v1);
-  var m = vMag(d);
-  return vAdd(v1, vScale(t * m, vNorm(d)));
+  var sc = vMag(d) * t;
+  return vAdd(v1, vScale(sc, vNorm(d)));
+});
+
+// vLerp :: Vector -> Vector -> Number -> Vector
+var vLerp = curry(function (v1, v2, t) {
+  return vTowards(t, v1, v2);
 });
 
 // vNorm :: Vector -> Vector
@@ -148,9 +149,14 @@ var vMidpoint = curry(function (v, v2) {
   return vScale(0.5, vAdd(v, v2));
 });
 
+// vAngle :: Number -> Vector
+var vAngle = function vAngle(a) {
+  return [Math.cos(a), Math.sin(a)];
+};
+
 // vAlongAngle :: Number -> Number -> Vector
 var vAlongAngle = curry(function (a, r, v) {
-  return [v[0] + Math.cos(a) * r, v[1] + Math.sin(a) * r];
+  return compose(vAdd(v), vScale(r), vAngle)(a);
 });
 
 // vFastDist :: Vector -> Vector -> Number
@@ -177,6 +183,7 @@ var vDet = function vDet(m) {
 /**
  * Polutes the global scope with unnamespaced functions
  */
+/* eslint-disable func-names */
 var polute = function polute() {
   window.vAdd = vAdd;
   window.vSub = vSub;
@@ -184,6 +191,7 @@ var polute = function polute() {
   window.vNormal = vNormal;
   window.vScale = vScale;
   window.vTowards = vTowards;
+  window.vLerp = vLerp;
   window.vNorm = vNorm;
   window.mId = mId;
   window.vCreateMatrix = vCreateMatrix;
@@ -202,24 +210,39 @@ var polute = function polute() {
   window.vDot = vDot;
   window.vDet = vDet;
 };
+/* eslint-enable func-names */
 
 /**
  * Exposed API
  */
-window.vec = (_window$vec = {
+window.vec = {
   add: vAdd,
   sub: vSub,
   mag: vMag,
   normal: vNormal,
   scale: vScale,
   towards: vTowards,
+  lerp: vLerp,
   norm: vNorm,
   mId: mId,
   createMatrix: vCreateMatrix,
   transform: vTransform,
   compose: mCompose,
-  rotate: mRotate,
-  translate: mTranslate
-}, _defineProperty(_window$vec, "scale", mScale), _defineProperty(_window$vec, "shear", mShear), _defineProperty(_window$vec, "rotate", vRotate), _defineProperty(_window$vec, "rotatePointAround", vRotatePointAround), _defineProperty(_window$vec, "midpoint", vMidpoint), _defineProperty(_window$vec, "alongAngle", vAlongAngle), _defineProperty(_window$vec, "dist", vDist), _defineProperty(_window$vec, "fastDist", vFastDist), _defineProperty(_window$vec, "dot", vDot), _defineProperty(_window$vec, "det", vDet), _defineProperty(_window$vec, "polute", polute), _window$vec);
+  mRotate: mRotate,
+  mTranslate: mTranslate,
+  mScale: mScale,
+  mShear: mShear,
+  rotate: vRotate,
+  rotatePointAround: vRotatePointAround,
+  midpoint: vMidpoint,
+  angle: vAngle,
+  alongAngle: vAlongAngle,
+  dist: vDist,
+  fastDist: vFastDist,
+  dot: vDot,
+  det: vDet,
+
+  polute: polute
+};
 /* end window exports */
 },{}]},{},[1])
