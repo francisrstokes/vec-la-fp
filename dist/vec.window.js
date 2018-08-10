@@ -199,7 +199,7 @@ var vDet = function vDet(m) {
   return m[0] * m[4] - m[3] * m[1];
 };
 
-var _vec = {
+var vec = {
   add: vAdd,
   add3: vAdd3,
   addAll: vAddAll,
@@ -272,6 +272,6 @@ var polute = function polute() {
 /**
  * Exposed API
  */
-window.vec = Object.assign({ polute: polute }, _vec);
+window.vec = Object.assign({ polute: polute }, vec);
 /* end window exports */
 },{}]},{},[1])

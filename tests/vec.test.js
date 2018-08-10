@@ -1,9 +1,17 @@
 const chai = require('chai');
 const expect = chai.expect;
 const {compose} = require('ramda');
-const {vec} = require('../dist/vec.module.js');
+const all = require('../dist/vec.module.js');
+const {vec} = all;
 
 /* eslint-disable func-names */
+describe('Exports', function() {
+  it('should contain equal number of functions exported in the vec namespace and individuals', () => {
+    // Minus 'default' and 'vec'
+    expect(Object.keys(all).length - 2).to.equal(Object.keys(vec).length);
+  });
+});
+
 describe('Vec-la', function() {
   it('should add two vectors', () => {
     const v1 = [1, 2];
