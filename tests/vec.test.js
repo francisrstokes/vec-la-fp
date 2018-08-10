@@ -11,10 +11,38 @@ describe('Vec-la', function() {
     expect(vec.add(v1, v2)).to.deep.equal([4, 6]);
   });
 
+  it('should add three vectors', () => {
+    const v1 = [1, 2];
+    const v2 = [3, 4];
+    const v3 = [5, 6];
+    expect(vec.add3(v1, v2, v3)).to.deep.equal([9, 12]);
+  });
+
+  it('should add an arbitrary number of vectors', () => {
+    const v1 = [1, 2];
+    const v2 = [3, 4];
+    const v3 = [5, 6];
+    expect(vec.addAll([v1, v2, v3])).to.deep.equal([9, 12]);
+  });
+
   it('should subtract two vectors', () => {
     const v1 = [1, 2];
     const v2 = [3, 4];
     expect(vec.sub(v1, v2)).to.deep.equal([-2, -2]);
+  });
+
+  it('should subtract three vectors', () => {
+    const v1 = [1, 2];
+    const v2 = [3, 4];
+    const v3 = [5, 6];
+    expect(vec.sub3(v1, v2, v3)).to.deep.equal([-7, -8]);
+  });
+
+  it('should subtract an arbitrary number of vectors', () => {
+    const v1 = [1, 2];
+    const v2 = [3, 4];
+    const v3 = [5, 6];
+    expect(vec.subAll([v1, v2, v3])).to.deep.equal([-7, -8]);
   });
 
   it('should get the magnitude of a vector', () => {

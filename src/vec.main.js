@@ -21,8 +21,26 @@ const compose = (...functions) => pipe(...functions.reverse());
 // vAdd :: Vector -> Vector -> Vector
 const vAdd = curry((v, v2) => [v[0] + v2[0], v[1] + v2[1]]);
 
+// vAdd3 :: Vector -> Vector -> Vector -> Vector
+const vAdd3 = curry((v, v2, v3) => [
+  v[0] + v2[0] + v3[0],
+  v[1] + v2[1] + v3[1]
+]);
+
+// vAddAll :: [Vector] -> Vector
+const vAddAll = vs => vs.reduce(vAdd, [0, 0]);
+
 // vSub :: Vector -> Vector -> Vector
 const vSub = curry((v, v2) => [v[0] - v2[0], v[1] - v2[1]]);
+
+// vSub3 :: Vector -> Vector -> Vector -> Vector
+const vSub3 = curry((v, v2, v3) => [
+  v[0] - v2[0] - v3[0],
+  v[1] - v2[1] - v3[1]
+]);
+
+// vSubAll :: [Vector] -> Vector
+const vSubAll = (vs) => vs.slice(1).reduce(vSub, vs.slice(0, 1)[0]);
 
 // vMag :: Vector -> Number
 const vMag = (v) => Math.sqrt(v[0] * v[0] + v[1] * v[1]);
@@ -147,78 +165,13 @@ const vDot = curry((v, v2) => v[0] * v2[0] + v[1] * v2[1]);
 // vDet :: Matrix -> Number
 const vDet = (m) => m[0] * m[4] - m[3] * m[1];
 
-
-/* start window exports */
-/**
- * Polutes the global scope with unnamespaced functions
- */
-/* eslint-disable func-names */
-const polute = function() {
-  window.vAdd = vAdd;
-  window.vSub = vSub;
-  window.vMag = vMag;
-  window.vNormal = vNormal;
-  window.vScale = vScale;
-  window.vTowards = vTowards;
-  window.vLerp = vLerp;
-  window.vNorm = vNorm;
-  window.mId = mId;
-  window.vCreateMatrix = vCreateMatrix;
-  window.vTransform = vTransform;
-  window.mCompose = mCompose;
-  window.mRotate = mRotate;
-  window.mTranslate = mTranslate;
-  window.mScale = mScale;
-  window.mShear = mShear;
-  window.vRotate = vRotate;
-  window.vRotatePointAround = vRotatePointAround;
-  window.vMidpoint = vMidpoint;
-  window.vAlongAngle = vAlongAngle;
-  window.vFastDist = vFastDist;
-  window.vDist = vDist;
-  window.vDot = vDot;
-  window.vDet = vDet;
-};
-/* eslint-enable func-names */
-
-/**
- * Exposed API
- */
-window.vec = {
+const _vec = {
   add: vAdd,
+  add3: vAdd3,
+  addAll: vAddAll,
   sub: vSub,
-  mag: vMag,
-  normal: vNormal,
-  scale: vScale,
-  towards: vTowards,
-  lerp: vLerp,
-  norm: vNorm,
-  mId: mId,
-  createMatrix: vCreateMatrix,
-  transform: vTransform,
-  compose: mCompose,
-  mRotate: mRotate,
-  mTranslate: mTranslate,
-  mScale: mScale,
-  mShear: mShear,
-  rotate: vRotate,
-  rotatePointAround: vRotatePointAround,
-  midpoint: vMidpoint,
-  angle: vAngle,
-  alongAngle: vAlongAngle,
-  dist: vDist,
-  fastDist: vFastDist,
-  dot: vDot,
-  det: vDet,
-
-  polute: polute
-};
-/* end window exports */
-
-/* start exports */
-export const vec = {
-  add: vAdd,
-  sub: vSub,
+  sub3: vSub3,
+  subAll: vSubAll,
   mag: vMag,
   normal: vNormal,
   scale: vScale,
@@ -238,9 +191,57 @@ export const vec = {
   midpoint: vMidpoint,
   angle: vAngle,
   alongAngle: vAlongAngle,
-  dist: vDist,
   fastDist: vFastDist,
+  dist: vDist,
   dot: vDot,
   det: vDet,
 };
+
+/* start window exports */
+/**
+ * Polutes the global scope with unnamespaced functions
+ */
+/* eslint-disable func-names */
+const polute = function() {
+  window.vAdd = vAdd;
+  window.vAdd3 = vAdd3;
+  window.vAddAll = vAddAll;
+  window.vSub = vSub;
+  window.vSub3 = vSub3;
+  window.vSubAll = vSubAll;
+  window.vMag = vMag;
+  window.vNormal = vNormal;
+  window.vScale = vScale;
+  window.vTowards = vTowards;
+  window.vLerp = vLerp;
+  window.vNorm = vNorm;
+  window.mId = mId;
+  window.vCreateMatrix = vCreateMatrix;
+  window.vTransform = vTransform;
+  window.mCompose = mCompose;
+  window.mRotate = mRotate;
+  window.mTranslate = mTranslate;
+  window.mScale = mScale;
+  window.mShear = mShear;
+  window.vRotate = vRotate;
+  window.vRotatePointAround = vRotatePointAround;
+  window.vMidpoint = vMidpoint;
+  window.vAngle = vAngle;
+  window.vAlongAngle = vAlongAngle;
+  window.vFastDist = vFastDist;
+  window.vDist = vDist;
+  window.vDot = vDot;
+  window.vDet = vDet;
+};
+/* eslint-enable func-names */
+
+/**
+ * Exposed API
+ */
+window.vec = Object.assign({ polute }, _vec);
+/* end window exports */
+
+/* start exports */
+export const vec = Object.assign({}, _vec);
+export default vec;
 /* end exports */

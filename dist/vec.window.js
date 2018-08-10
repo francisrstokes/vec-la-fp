@@ -51,10 +51,30 @@ var vAdd = curry(function (v, v2) {
   return [v[0] + v2[0], v[1] + v2[1]];
 });
 
+// vAdd3 :: Vector -> Vector -> Vector -> Vector
+var vAdd3 = curry(function (v, v2, v3) {
+  return [v[0] + v2[0] + v3[0], v[1] + v2[1] + v3[1]];
+});
+
+// vAddAll :: [Vector] -> Vector
+var vAddAll = function vAddAll(vs) {
+  return vs.reduce(vAdd, [0, 0]);
+};
+
 // vSub :: Vector -> Vector -> Vector
 var vSub = curry(function (v, v2) {
   return [v[0] - v2[0], v[1] - v2[1]];
 });
+
+// vSub3 :: Vector -> Vector -> Vector -> Vector
+var vSub3 = curry(function (v, v2, v3) {
+  return [v[0] - v2[0] - v3[0], v[1] - v2[1] - v3[1]];
+});
+
+// vSubAll :: [Vector] -> Vector
+var vSubAll = function vSubAll(vs) {
+  return vs.slice(1).reduce(vSub, vs.slice(0, 1)[0]);
+};
 
 // vMag :: Vector -> Number
 var vMag = function vMag(v) {
@@ -179,6 +199,38 @@ var vDet = function vDet(m) {
   return m[0] * m[4] - m[3] * m[1];
 };
 
+var _vec = {
+  add: vAdd,
+  add3: vAdd3,
+  addAll: vAddAll,
+  sub: vSub,
+  sub3: vSub3,
+  subAll: vSubAll,
+  mag: vMag,
+  normal: vNormal,
+  scale: vScale,
+  towards: vTowards,
+  lerp: vLerp,
+  norm: vNorm,
+  mId: mId,
+  createMatrix: vCreateMatrix,
+  transform: vTransform,
+  mCompose: mCompose,
+  mRotate: mRotate,
+  mTranslate: mTranslate,
+  mScale: mScale,
+  mShear: mShear,
+  rotate: vRotate,
+  rotatePointAround: vRotatePointAround,
+  midpoint: vMidpoint,
+  angle: vAngle,
+  alongAngle: vAlongAngle,
+  fastDist: vFastDist,
+  dist: vDist,
+  dot: vDot,
+  det: vDet
+};
+
 /* start window exports */
 /**
  * Polutes the global scope with unnamespaced functions
@@ -186,7 +238,11 @@ var vDet = function vDet(m) {
 /* eslint-disable func-names */
 var polute = function polute() {
   window.vAdd = vAdd;
+  window.vAdd3 = vAdd3;
+  window.vAddAll = vAddAll;
   window.vSub = vSub;
+  window.vSub3 = vSub3;
+  window.vSubAll = vSubAll;
   window.vMag = vMag;
   window.vNormal = vNormal;
   window.vScale = vScale;
@@ -204,6 +260,7 @@ var polute = function polute() {
   window.vRotate = vRotate;
   window.vRotatePointAround = vRotatePointAround;
   window.vMidpoint = vMidpoint;
+  window.vAngle = vAngle;
   window.vAlongAngle = vAlongAngle;
   window.vFastDist = vFastDist;
   window.vDist = vDist;
@@ -215,34 +272,6 @@ var polute = function polute() {
 /**
  * Exposed API
  */
-window.vec = {
-  add: vAdd,
-  sub: vSub,
-  mag: vMag,
-  normal: vNormal,
-  scale: vScale,
-  towards: vTowards,
-  lerp: vLerp,
-  norm: vNorm,
-  mId: mId,
-  createMatrix: vCreateMatrix,
-  transform: vTransform,
-  compose: mCompose,
-  mRotate: mRotate,
-  mTranslate: mTranslate,
-  mScale: mScale,
-  mShear: mShear,
-  rotate: vRotate,
-  rotatePointAround: vRotatePointAround,
-  midpoint: vMidpoint,
-  angle: vAngle,
-  alongAngle: vAlongAngle,
-  dist: vDist,
-  fastDist: vFastDist,
-  dot: vDot,
-  det: vDet,
-
-  polute: polute
-};
+window.vec = Object.assign({ polute: polute }, _vec);
 /* end window exports */
 },{}]},{},[1])

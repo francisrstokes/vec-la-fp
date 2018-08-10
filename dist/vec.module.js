@@ -54,10 +54,30 @@ var vAdd = curry(function (v, v2) {
   return [v[0] + v2[0], v[1] + v2[1]];
 });
 
+// vAdd3 :: Vector -> Vector -> Vector -> Vector
+var vAdd3 = curry(function (v, v2, v3) {
+  return [v[0] + v2[0] + v3[0], v[1] + v2[1] + v3[1]];
+});
+
+// vAddAll :: [Vector] -> Vector
+var vAddAll = function vAddAll(vs) {
+  return vs.reduce(vAdd, [0, 0]);
+};
+
 // vSub :: Vector -> Vector -> Vector
 var vSub = curry(function (v, v2) {
   return [v[0] - v2[0], v[1] - v2[1]];
 });
+
+// vSub3 :: Vector -> Vector -> Vector -> Vector
+var vSub3 = curry(function (v, v2, v3) {
+  return [v[0] - v2[0] - v3[0], v[1] - v2[1] - v3[1]];
+});
+
+// vSubAll :: [Vector] -> Vector
+var vSubAll = function vSubAll(vs) {
+  return vs.slice(1).reduce(vSub, vs.slice(0, 1)[0]);
+};
 
 // vMag :: Vector -> Number
 var vMag = function vMag(v) {
@@ -182,10 +202,13 @@ var vDet = function vDet(m) {
   return m[0] * m[4] - m[3] * m[1];
 };
 
-/* start exports */
-var vec = exports.vec = {
+var _vec = {
   add: vAdd,
+  add3: vAdd3,
+  addAll: vAddAll,
   sub: vSub,
+  sub3: vSub3,
+  subAll: vSubAll,
   mag: vMag,
   normal: vNormal,
   scale: vScale,
@@ -205,9 +228,13 @@ var vec = exports.vec = {
   midpoint: vMidpoint,
   angle: vAngle,
   alongAngle: vAlongAngle,
-  dist: vDist,
   fastDist: vFastDist,
+  dist: vDist,
   dot: vDot,
   det: vDet
 };
+
+/* start exports */
+var vec = exports.vec = Object.assign({}, _vec);
+exports.default = vec;
 /* end exports */

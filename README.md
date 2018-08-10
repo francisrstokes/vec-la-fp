@@ -20,7 +20,15 @@ and import or require as needed. If you need to use a standalone windowed versio
 
 `vec.add(v, v2)` - adds `v` and `v2`
 
+`vec.add3(v, v2, v3)` - adds `v`, `v2`, `v3`
+
+`vec.addAll([v1, v2, ..., vN])` - adds all vectors together
+
 `vec.sub(v, v2)` - subtracts `v2` from `v1`
+
+`vec.sub3(v, v2, v3)` - subtracts `v`, `v2`, `v3`
+
+`vec.subAll([v1, v2, ..., vN])` - subtracts all vectors together
 
 `vec.mag(v)` - gets magnitude of `v`
 
@@ -29,6 +37,8 @@ and import or require as needed. If you need to use a standalone windowed versio
 `vec.scale(sc, v)` - scales `v` by `sc`
 
 `vec.towards(t, v, v2)` - gets the vector at "time" `t` between `v` and `v2`
+
+`vec.lerp(v, v2, t)` - `towards`, but with the `t` argument last
 
 `vec.norm(v)` - normalises `v`
 
@@ -44,6 +54,8 @@ and import or require as needed. If you need to use a standalone windowed versio
 
 `vec.mTranslate(v, m)` - compose matrix `m` with a translation matrix using vector `v` for x and y
 
+`vec.mId` - The identity matrix
+
 `vec.mScale(v, m)` - compose matrix `m` with a scale matrix using vector `v` for x and y
 
 `vec.mShear(v, m)` - compose matrix `m` with a shear matrix using vector `v` for x and y
@@ -58,19 +70,23 @@ and import or require as needed. If you need to use a standalone windowed versio
 
 `vec.dist(v, v2)` - gets distance from v to v2
 
+`vec.fastDist(v, v2)` - gets "fast" distance from v to v2 (no square root)
+
 `vec.dot(v, v2)` - gets dot product of v and v2
 
 `vec.det(m)` - calculates the determine of matrix m
 
-
-
 Finally, when using the window version you can call `vec.polute()` to insert these functions into the global scope with the naming convention:
 
-`vFunctionName` e.g `vAdd`, `vMidpoint`, `vDot` etc.
+`vFunctionName` e.g `vAdd`, `vMidpoint`, `vDot` etc 
+
+and `mCompose`, `mRotate` etc for functions associated with matrices
 
 ## Composing matrices
 
 vec-la provided a dot-chain style API for building matrices, but since matrices compose the same as functions, this API can be captured via regular function composition. For example:
+
+**Note!** The `compose` function below is *function* compose, not the `vec.mCompose` function for matrices
 
 ```javascript
 const M = compose(
