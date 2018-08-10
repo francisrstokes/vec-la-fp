@@ -165,7 +165,7 @@ const vDot = curry((v, v2) => v[0] * v2[0] + v[1] * v2[1]);
 // vDet :: Matrix -> Number
 const vDet = (m) => m[0] * m[4] - m[3] * m[1];
 
-const _vec = {
+const vec = {
   add: vAdd,
   add3: vAdd3,
   addAll: vAddAll,
@@ -238,10 +238,39 @@ const polute = function() {
 /**
  * Exposed API
  */
-window.vec = Object.assign({ polute }, _vec);
+window.vec = Object.assign({ polute }, vec);
 /* end window exports */
 
 /* start exports */
-export const vec = Object.assign({}, _vec);
 export default vec;
+export { vec };
+export { vAdd };
+export { vAdd3 };
+export { vAddAll };
+export { vSub };
+export { vSub3 };
+export { vSubAll };
+export { vMag };
+export { vNormal };
+export { vScale };
+export { vTowards };
+export { vLerp };
+export { vNorm };
+export { mId };
+export { vCreateMatrix };
+export { vTransform };
+export { mCompose };
+export { mRotate };
+export { mTranslate };
+export { mScale };
+export { mShear };
+export { vRotate };
+export { vRotatePointAround };
+export { vMidpoint };
+export { vAngle };
+export { vAlongAngle };
+export { vFastDist };
+export { vDist };
+export { vDot };
+export { vDet };
 /* end exports */

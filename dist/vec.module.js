@@ -202,7 +202,7 @@ var vDet = function vDet(m) {
   return m[0] * m[4] - m[3] * m[1];
 };
 
-var _vec = {
+var vec = {
   add: vAdd,
   add3: vAdd3,
   addAll: vAddAll,
@@ -235,6 +235,35 @@ var _vec = {
 };
 
 /* start exports */
-var vec = exports.vec = Object.assign({}, _vec);
 exports.default = vec;
+exports.vec = vec;
+exports.vAdd = vAdd;
+exports.vAdd3 = vAdd3;
+exports.vAddAll = vAddAll;
+exports.vSub = vSub;
+exports.vSub3 = vSub3;
+exports.vSubAll = vSubAll;
+exports.vMag = vMag;
+exports.vNormal = vNormal;
+exports.vScale = vScale;
+exports.vTowards = vTowards;
+exports.vLerp = vLerp;
+exports.vNorm = vNorm;
+exports.mId = mId;
+exports.vCreateMatrix = vCreateMatrix;
+exports.vTransform = vTransform;
+exports.mCompose = mCompose;
+exports.mRotate = mRotate;
+exports.mTranslate = mTranslate;
+exports.mScale = mScale;
+exports.mShear = mShear;
+exports.vRotate = vRotate;
+exports.vRotatePointAround = vRotatePointAround;
+exports.vMidpoint = vMidpoint;
+exports.vAngle = vAngle;
+exports.vAlongAngle = vAlongAngle;
+exports.vFastDist = vFastDist;
+exports.vDist = vDist;
+exports.vDot = vDot;
+exports.vDet = vDet;
 /* end exports */

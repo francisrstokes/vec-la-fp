@@ -64,17 +64,51 @@ and import or require as needed. If you need to use a standalone windowed versio
 
 `vec.rotatePointAround(a, cp, v)` - rotates `v` by angle `a` around control point vector `cp`
 
-`vec.midpoint(v, v2)` - gets midpoint between v and v2
+`vec.midpoint(v, v2)` - gets midpoint between `v` and `v2`
 
-`vec.alongAngle(a, r, v)` - gets a vector r units along angle a from vector v
+`vec.alongAngle(a, r, v)` - gets a vector `r` units along angle `a` from vector `v`
 
-`vec.dist(v, v2)` - gets distance from v to v2
+`vec.dist(v, v2)` - gets distance from `v` to `v2`
 
-`vec.fastDist(v, v2)` - gets "fast" distance from v to v2 (no square root)
+`vec.fastDist(v, v2)` - gets "fast" distance from `v` to `v2` (no square root)
 
-`vec.dot(v, v2)` - gets dot product of v and v2
+`vec.dot(v, v2)` - gets dot product of `v` and `v2`
 
-`vec.det(m)` - calculates the determine of matrix m
+`vec.det(m)` - calculates the determine of matrix `m`
+
+### Tree shaking
+
+All the functions are exported for better tree shaking:
+
+- vAdd
+- vAdd3
+- vAddAll
+- vSub
+- vSub3
+- vSubAll
+- vMag
+- vNormal
+- vScale
+- vTowards
+- vLerp
+- vNorm
+- mId
+- vCreateMatrix
+- vTransform
+- mCompose
+- mRotate
+- mTranslate
+- mScale
+- mShear
+- vRotate
+- vRotatePointAround
+- vMidpoint
+- vAngle
+- vAlongAngle
+- vFastDist
+- vDist
+- vDot
+- vDet
 
 Finally, when using the window version you can call `vec.polute()` to insert these functions into the global scope with the naming convention:
 
