@@ -61,6 +61,25 @@ const vTowards = curry((t, v1, v2) => {
 // vLerp :: Vector -> Vector -> Number -> Vector
 const vLerp = curry((v1, v2, t) => vTowards(t, v1, v2));
 
+// vScalarNear :: Number -> Number -> Number -> bool
+const vScalarNear = curry((e, a, b) => (Math.abs(a - b) < e))
+
+// vNear :: Number -> Vector -> Vector -> bool
+const vNear = curry((e, a, b) => (vScalarNear(e,a[0],b[0]) && vScalarNear(e,a[1],b[1])))
+
+// vClampMag :: Number -> Number -> Vector -> Vector
+const vClampMag = curry((min, max, v) =>
+                        {
+                          const d = vec.mag(v);
+                          if (d < min)
+                            return vec.scale(min/d,v);
+                          else if (d > max)
+                            return vec.scale(max/d,v);
+                          else
+                            return v;
+                        }
+                       );
+
 // vNorm :: Vector -> Vector
 const vNorm = (v) => {
   const mag = vMag(v);
@@ -162,6 +181,20 @@ const vDist = curry((v, v2) => Math.hypot(v2[0] - v[0], v2[1] - v[1]));
 // vDot :: Vector -> Vector -> Number
 const vDot = curry((v, v2) => v[0] * v2[0] + v[1] * v2[1]);
 
+// vPerpDot :: Vector -> Vector -> Number
+const vPerpDot = curry((v, v2) => v[0] * v2[1] - v[1] * v2[0]);
+
+// vTriangleArea :: Vector -> Vector -> Vector -> Number
+const vTriangleArea = curry((a, b, c) =>
+                            ((b[0] - a[0]) * (c[1] - a[1]) -
+                             (c[0] - a[0]) * (b[1] - a[1]))/2);
+
+// vColinear :: Vector -> Vector -> Vector -> bool
+const vColinear =
+      curry((v0, v1, v2) =>
+            (vScalarNear(1e-4,
+                        vTriangleArea(v0, v1, v2),0)));
+
 // vDet :: Matrix -> Number
 const vDet = (m) => m[0] * m[4] - m[3] * m[1];
 
@@ -177,6 +210,9 @@ const vec = {
   scale: vScale,
   towards: vTowards,
   lerp: vLerp,
+  scalarNear: vScalarNear,
+  near: vNear,
+  clampMag: vClampMag,
   norm: vNorm,
   mId: mId,
   createMatrix: vCreateMatrix,
@@ -194,7 +230,10 @@ const vec = {
   fastDist: vFastDist,
   dist: vDist,
   dot: vDot,
-  det: vDet,
+  perpdot: vPerpDot,
+  triangleArea: vTriangleArea,
+  colinear: vColinear,
+  det: vDet
 };
 
 /* start window exports */
@@ -214,6 +253,9 @@ const polute = function() {
   window.vScale = vScale;
   window.vTowards = vTowards;
   window.vLerp = vLerp;
+  window.vScalarNear = vScalarNear,
+  window.vNear = vNear;
+  window.vClampMag = vClampMag;
   window.vNorm = vNorm;
   window.mId = mId;
   window.vCreateMatrix = vCreateMatrix;
@@ -231,6 +273,9 @@ const polute = function() {
   window.vFastDist = vFastDist;
   window.vDist = vDist;
   window.vDot = vDot;
+  window.vPerpDot = vPerpDot;
+  window.vTriangleArea = vTriangleArea;
+  window.vColinear = vColinear;
   window.vDet = vDet;
 };
 /* eslint-enable func-names */
@@ -255,6 +300,9 @@ export { vNormal };
 export { vScale };
 export { vTowards };
 export { vLerp };
+export { vScalarNear };
+export { vNear };
+export { vClampMag };
 export { vNorm };
 export { mId };
 export { vCreateMatrix };
@@ -272,5 +320,8 @@ export { vAlongAngle };
 export { vFastDist };
 export { vDist };
 export { vDot };
+export { vPerpDot };
+export { vTriangleArea };
+export { vColinear };
 export { vDet };
 /* end exports */

@@ -40,6 +40,12 @@ and import or require as needed. If you need to use a standalone windowed versio
 
 `vec.lerp(v, v2, t)` - `towards`, but with the `t` argument last
 
+`vec.scalarNear(e, n, n2)` - true if n is within epsilon of n2
+
+`vec.near(e, v, v2)` - true if every elment of v is near the same in v2
+
+`vec.clampMag(min, max, v)` - a vector in the same direction as v with magnitude clamped to at least min and at most max
+
 `vec.norm(v)` - normalises `v`
 
 `vec.mId` - immutable identity matrix
@@ -73,6 +79,12 @@ and import or require as needed. If you need to use a standalone windowed versio
 `vec.fastDist(v, v2)` - gets "fast" distance from `v` to `v2` (no square root)
 
 `vec.dot(v, v2)` - gets dot product of `v` and `v2`
+
+`vec.perpdot(v, v2)` - the perpendicular dot product of `v` and `v2` (sometimes called cross)
+
+`vec.trinagleArea(a, b, c)` - signed area of triangle abc
+
+`vec.colinear(a, b, c)` - true if a b and c are colinear
 
 `vec.det(m)` - calculates the determine of matrix `m`
 
@@ -112,7 +124,7 @@ All the functions are exported for better tree shaking:
 
 Finally, when using the window version you can call `vec.polute()` to insert these functions into the global scope with the naming convention:
 
-`vFunctionName` e.g `vAdd`, `vMidpoint`, `vDot` etc 
+`vFunctionName` e.g `vAdd`, `vMidpoint`, `vDot` etc
 
 and `mCompose`, `mRotate` etc for functions associated with matrices
 
@@ -152,7 +164,7 @@ Clone the repository, and then run `npm install && npm test`.
 
 ### Addition
 
-```javascript 
+```javascript
 const v1 = [0, 1];
 const v2 = [1, 0];
 const v3 = vec.add(v1, v2); // [1, 1]
@@ -160,7 +172,7 @@ const v3 = vec.add(v1, v2); // [1, 1]
 
 ### Scaling
 
-```javascript 
+```javascript
 const v1 = [0, 1];
 const scaler = 10;
 const v2 = vec.scale(scaler, v1); // [0, 10]
@@ -168,14 +180,14 @@ const v2 = vec.scale(scaler, v1); // [0, 10]
 
 ### Normalising
 
-```javascript 
+```javascript
 const v1 = [6.32, -23.1];
 const v2 = vec.norm(v1); // [0.2638946146581466, -0.9645515187663272]
 ```
 
 ### Magnitude
 
-```javascript 
+```javascript
 const v1 = [6.32, -23.1];
 const mag = vec.mag(v1); // 23.948954048141644
 ```
@@ -183,7 +195,7 @@ const mag = vec.mag(v1); // 23.948954048141644
 
 ### Matrix Transform
 
-```javascript 
+```javascript
 const v1 = [10, 10];
 
 // Inversion matrix
@@ -197,7 +209,7 @@ const v2 = vec.transform(m, v1); // [-10, -10]
 
 ### Computing determinants
 
-```javascript 
+```javascript
 const m = [
   10, 0, 0,
   0, 10, 0,

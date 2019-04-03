@@ -106,6 +106,22 @@ var vLerp = curry(function (v1, v2, t) {
   return vTowards(t, v1, v2);
 });
 
+// vScalarNear :: Number -> Number -> Number -> bool
+var vScalarNear = curry(function (e, a, b) {
+  return Math.abs(a - b) < e;
+});
+
+// vNear :: Number -> Vector -> Vector -> bool
+var vNear = curry(function (e, a, b) {
+  return vScalarNear(e, a[0], b[0]) && vScalarNear(e, a[1], b[1]);
+});
+
+// vClampMag :: Number -> Number -> Vector -> Vector
+var vClampMag = curry(function (min, max, v) {
+  var d = vec.mag(v);
+  if (d < min) return vec.scale(min / d, v);else if (d > max) return vec.scale(max / d, v);else return v;
+});
+
 // vNorm :: Vector -> Vector
 var vNorm = function vNorm(v) {
   var mag = vMag(v);
@@ -197,6 +213,21 @@ var vDot = curry(function (v, v2) {
   return v[0] * v2[0] + v[1] * v2[1];
 });
 
+// vPerpDot :: Vector -> Vector -> Number
+var vPerpDot = curry(function (v, v2) {
+  return v[0] * v2[1] - v[1] * v2[0];
+});
+
+// vTriangleArea :: Vector -> Vector -> Vector -> Number
+var vTriangleArea = curry(function (a, b, c) {
+  return ((b[0] - a[0]) * (c[1] - a[1]) - (c[0] - a[0]) * (b[1] - a[1])) / 2;
+});
+
+// vColinear :: Vector -> Vector -> Vector -> bool
+var vColinear = curry(function (v0, v1, v2) {
+  return vScalarNear(1e-4, vTriangleArea(v0, v1, v2), 0);
+});
+
 // vDet :: Matrix -> Number
 var vDet = function vDet(m) {
   return m[0] * m[4] - m[3] * m[1];
@@ -214,6 +245,9 @@ var vec = {
   scale: vScale,
   towards: vTowards,
   lerp: vLerp,
+  scalarNear: vScalarNear,
+  near: vNear,
+  clampMag: vClampMag,
   norm: vNorm,
   mId: mId,
   createMatrix: vCreateMatrix,
@@ -231,7 +265,10 @@ var vec = {
   fastDist: vFastDist,
   dist: vDist,
   dot: vDot,
-  det: vDet
+  perpdot: vPerpDot,
+  det: vDet,
+  triangleArea: vTriangleArea,
+  colinear: vColinear
 };
 
 /* start exports */
@@ -248,6 +285,9 @@ exports.vNormal = vNormal;
 exports.vScale = vScale;
 exports.vTowards = vTowards;
 exports.vLerp = vLerp;
+exports.vScalarNear = vScalarNear;
+exports.vNear = vNear;
+exports.vClampMag = vClampMag;
 exports.vNorm = vNorm;
 exports.mId = mId;
 exports.vCreateMatrix = vCreateMatrix;
@@ -265,5 +305,8 @@ exports.vAlongAngle = vAlongAngle;
 exports.vFastDist = vFastDist;
 exports.vDist = vDist;
 exports.vDot = vDot;
+exports.vPerpDot = vPerpDot;
+exports.vTriangleArea = vTriangleArea;
+exports.vColinear = vColinear;
 exports.vDet = vDet;
 /* end exports */
