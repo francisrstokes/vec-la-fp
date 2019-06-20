@@ -106,7 +106,7 @@ var vLerp = curry(function (v1, v2, t) {
 // vNorm :: Vector -> Vector
 var vNorm = function vNorm(v) {
   var mag = vMag(v);
-  return [v[0] / mag, v[1] / mag];
+  return mag === 0 ? v : [v[0] / mag, v[1] / mag];
 };
 
 // mId :: Matrix

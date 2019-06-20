@@ -63,6 +63,11 @@ describe('Vec-la', function() {
     expect(vec.norm(v1)).to.deep.equal([3 / 5, 4 / 5]);
   });
 
+  it('should be able to normalize a zero vector', () => {
+    const v1 = [0, 0];
+    expect(vec.norm(v1)).to.deep.equal(v1);
+  });
+
   it('should scale a vector', () => {
     const v1 = [3, 4];
     const sc = 10;

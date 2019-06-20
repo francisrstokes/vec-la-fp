@@ -64,7 +64,7 @@ const vLerp = curry((v1, v2, t) => vTowards(t, v1, v2));
 // vNorm :: Vector -> Vector
 const vNorm = (v) => {
   const mag = vMag(v);
-  return [
+  return mag === 0 ? v : [
     v[0] / mag,
     v[1] / mag
   ];
