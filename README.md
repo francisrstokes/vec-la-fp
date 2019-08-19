@@ -80,9 +80,9 @@ and import or require as needed. If you need to use a standalone windowed versio
 
 `vec.dot(v, v2)` - gets dot product of `v` and `v2`
 
-`vec.perpdot(v, v2)` - the perpendicular dot product of `v` and `v2` (sometimes called cross)
+`vec.perpDot(v, v2)` - the perpendicular dot product of `v` and `v2` (sometimes called cross)
 
-`vec.trinagleArea(a, b, c)` - signed area of triangle abc
+`vec.triangleArea(a, b, c)` - signed area of triangle abc
 
 `vec.colinear(a, b, c)` - true if a b and c are colinear
 
