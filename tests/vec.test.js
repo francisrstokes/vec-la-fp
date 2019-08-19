@@ -81,6 +81,30 @@ describe('Vec-la', function() {
 
     expect(res1).to.deep.equal([10.5, 11]);
   });
+  it('should compute scalar nearness correctly', () => {
+    const a = 1;
+    const b = 1.00001;
+    expect(vec.scalarNear(1e-3,a,b));
+    expect(!vec.scalarNear(1e-7,a,b));
+  });
+
+  it('should compute vector nearness correctly', () => {
+    const a = 1;
+    const b = 1.00001;
+    const va = [a,b];
+    const vb = [b,a];
+    expect(vec.near(1e-3,va,vb));
+    expect(!vec.near(1e-7,va,vb));
+  });
+
+  it('should clamp vectors to given magnitudes', () => {
+    const v1 = [10, 10];
+    const maxclamp = vec.clampMag(0,10,v1);
+    expect(vec.scalarNear(1e-10,maxclamp[0],Math.sqrt((10*10)/2)));
+    const minclamp = vec.clampMag(100,100,v1);
+    expect(vec.scalarNear(1e-10,vec.mag(minclamp),100));
+    expect(minclamp[0]).to.equal(minclamp[1]);
+  });
 
   it('should apply a matrix transformation to a vector', () => {
     const v1 = [3, 4];
@@ -190,6 +214,32 @@ describe('Vec-la', function() {
     const v2 = [4, 5];
 
     expect(vec.dot(v1, v2)).to.equal(14);
+  });
+
+  it('should compute the perpdot produce of two vectors', () => {
+    const v1 = [1, 2];
+    const v2 = [4, 5];
+
+    expect(vec.perpdot(v1, v2)).to.equal(-3);
+  });
+
+  it('should compute a trianglular area', () => {
+    const v1 = [0, 0];
+    const v2 = [4, 0];
+    const v3 = [4, 3];
+
+    expect(vec.triangleArea(v1, v2, v3)).to.equal(6);
+  });
+
+  it('should determine colinearity', () => {
+    const v1 = [0, 0];
+    const v2 = [5, 5];
+    const v3 = [2, 2];
+    const v4 = [2, -2];
+
+    expect(vec.colinear(v1, v2, v3));
+    expect(vec.colinear(v1, v3, v2));
+    expect(!vec.colinear(v1, v2, v4));
   });
 
   it('should build a transformation matrix from a composition', () => {
