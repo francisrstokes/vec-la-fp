@@ -1,6 +1,8 @@
 # vec-la-fp
 
-`Vec-la-fp` is the functional version of the `vec-la` library. All functions are curried with arguments reordered to support composition. MatrixBuilder is replaced with composable calls to `mRotate`, `mTranslate`, `mScale`, `mShear`, and `mCompose` for abitrary matrix concatenations.
+`Vec-la-fp` is the functional version of the `vec-la` library. All functions are curried with arguments reordered to support composition. MatrixBuilder is replaced with composable calls to `mRotate`, `mTranslate`, `mScale`, `mShear`, and `mCompose` for arbitrary matrix concatenations.
+
+Includes typescript types.
 
 ## Installation
 
@@ -14,7 +16,8 @@ and import or require as needed. If you need to use a standalone windowed versio
 
 - Immutable functions for manipulating vectors and matrices
 - Vectors and matrices represented as pure, single dimensional arrays
-- Composable and fully curried
+- Composable and fully (auto) curried
+- Typescript typings for all overloadings
 
 ## API
 

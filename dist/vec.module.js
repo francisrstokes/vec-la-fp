@@ -119,7 +119,8 @@ var vNear = curry(function (e, a, b) {
 // vClampMag :: Number -> Number -> Vector -> Vector
 var vClampMag = curry(function (min, max, v) {
   var d = vec.mag(v);
-  if (d < min) return vec.scale(min / d, v);else if (d > max) return vec.scale(max / d, v);else return v;
+  if (d < min) return vec.scale(min / d, v);else if (d > max) return vec.scale(max / d, v);
+  return v;
 });
 
 // vNorm :: Vector -> Vector
@@ -266,9 +267,9 @@ var vec = {
   dist: vDist,
   dot: vDot,
   perpdot: vPerpDot,
-  det: vDet,
   triangleArea: vTriangleArea,
-  colinear: vColinear
+  colinear: vColinear,
+  det: vDet
 };
 
 /* start exports */
