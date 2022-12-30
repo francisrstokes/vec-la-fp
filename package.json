@@ -28,7 +28,7 @@
     "gulp-browserify": "^0.5.1",
     "gulp-rename": "^1.2.2",
     "gulp-strip-code": "^0.1.4",
-    "mocha": "^6.2.1",
+    "mocha": "^10.2.0",
     "ramda": "^0.25.0"
   }
 }
