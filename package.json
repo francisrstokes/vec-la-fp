@@ -24,7 +24,7 @@
     "chai": "^4.0.1",
     "eslint": "^4.17.0",
     "gulp": "^4.0.2",
-    "gulp-babel": "^6.1.2",
+    "gulp-babel": "^8.0.0",
     "gulp-browserify": "^0.5.1",
     "gulp-rename": "^1.2.2",
     "gulp-strip-code": "^0.1.4",
